@@ -32,7 +32,7 @@ from fatgoose3.crawler import (CrawlCandidate, Crawler)
 from fatgoose3.network import NetworkFetcher
 
 
-class Goose(object):
+class FatGoose(object):
     ''' Extract most likely article content and aditional metadata from a URL
         or previously fetched HTML document
 
