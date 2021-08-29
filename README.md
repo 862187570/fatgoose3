@@ -78,25 +78,27 @@ g.close()
 
 ## 常用设置
 
-- fatgoose3如果没有从网页中提取到发布时间，也会尝试从URL中提取出文章时间，如果不希望从url中提取时间，可以设置，此设置默认为 `True`
-    ```python
-    g.config.fetch_pubdate_from_url = False
-    ```
+fatgoose3如果没有从网页中提取到发布时间，也会尝试从URL中提取出文章时间，如果不希望从url中提取时间，可以设置，此设置默认为 `True`
+
+```python
+g.config.fetch_pubdate_from_url = False
+```
     
 
 
-- 如果需要爬取国外网站，可以设置代理
-    ```python
-    proxies = {
-        'http': '127.0.0.1:6789'
-    }
-    g.config.http_proxies = proxies
-   ```
+如果需要爬取国外网站，可以设置代理
 
-- 如果网站需要代理才能采集, 可以设置cookie
-    ```python
-    g.config.http_headers['cookie'] = 'your cookies'
-    ```
+```python
+proxies = {
+    'http': '127.0.0.1:6789'
+}
+g.config.http_proxies = proxies
+```
+
+如果网站需要代理才能采集, 可以设置cookie
+```python
+g.config.http_headers['cookie'] = 'your cookies'
+```
 
 ## 例3 如何使用 `proxy` 和 `cookie`
 ```python
