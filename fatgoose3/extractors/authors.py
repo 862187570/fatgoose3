@@ -40,7 +40,7 @@ class AuthorsExtractor(BaseExtractor):
             if known_tag.domain and known_tag.domain == self.article.domain:    # 当有配置特定域名就直接忽略下面的规则
                 if known_tag.processor is not None:
                     author = known_tag.processor(meta_tags[0].text_content().strip())
-                    return author
+                    return author.split('\n')[0].strip()
 
             for meta_tag in meta_tags:
 

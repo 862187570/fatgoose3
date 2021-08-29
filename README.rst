@@ -8,6 +8,10 @@ FatGoose3
 
 ``pip install fatgoose3``
 
+Github
+----------------
+https://github.com/xlomg/fatgoose3
+
 例1 最简单的例子
 ----------------
 
