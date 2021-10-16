@@ -8,7 +8,7 @@ Pipfile
 Pipfile.lock
 # C extensions
 *.so
-
+tests/
 # Distribution / packaging
 .Python
 build/
