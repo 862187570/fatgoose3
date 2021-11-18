@@ -1,19 +1,72 @@
 FatGoose3
 =========
 
-经过强化的goose3通用网页提取器
+经过强化的goose3通用网页提取器,
+我测试了中英文两种新闻的解析，都有不错的效果
 
 安装
 ----
 
 ``pip install fatgoose3``
 
+虽然FatGoose有自带的下载器，但是并不推荐使用，本例中我们使用经过requests下载好的网页传给\ ``raw_html``\ ，把FatGoose只当作解析器用，这样灵活度更高。
+如果想用FatGoose自带的下载器，可以参考\ ``examples``\ 文件夹里的\ ``eg.0.py``
+
 例1 最简单的例子
 ----------------
 
-虽然FatGoose有自带的下载器，但是并不推荐使用，本例中我们使用经过requests下载好的网页传给\ ``raw_html``\ ，把FatGoose只当作解析器用，这样灵活度更高。
+中文资讯
+~~~~~~~~
 
-如果想用FatGoose自带的下载器，可以参考\ ``examples``\ 文件夹里的\ ``eg.3.py``
+.. code:: shell
+
+    import requests
+    from fatgoose3 import FatGoose
+    from fatgoose3.text import StopWordsChinese
+
+    g = FatGoose()
+    g.config.use_meta_language = False
+    g.config.target_language = 'zh'
+    g.config.stopwords_class = StopWordsChinese
+
+    url = "http://military.cntv.cn/2015/05/28/ARTI1432794380285200.shtml"
+    resp = requests.get(url)
+    resp.encoding = 'utf8'
+    news = g.extract(url=url, raw_html=resp.text)
+
+    print(f'news.title: %s\n' % news.title)
+    print(f'news.author: %s\n' % news.authors)
+    print(f'news.publish_date: %s\n' % news.publish_date)
+    print(f'news.cleaned_text: %s\n' % news.cleaned_text)
+    print(f'news.infos: %s\n' % news.infos)
+    g.close()
+
+.. code:: text
+
+    news.title: 德公司推出无人机新型防撞单元 能配备多旋翼平台_军事_央视网(cctv.com)
+
+    news.author: 王腾
+
+    news.publish_date: 2015-05-28 00:00:00
+
+    news.cleaned_text: 中新网5月28日电 据中国国防科技信息网报道，针对无人机防撞问题，德国一家公司正在推出一种新的解决方案：无人机防撞单元。据悉，该单元在工作时使用多种不同的传感器，且无需GPS定位信息，能配备到大多数单旋翼或多旋翼平台上。
+
+    无人机已经成为当今社会的一种重要工具，我们难以预估这一新兴产业对未来生活的深远影响。但可以明确的是，除了巨大的经济潜力，小型、灵活的无人机同时带来了一种实际的隐患：旋翼机在飞行过程中，若叶片碰触其他物体或正常运转受到阻碍，可能导致其坠落。举例说明这一问题的严峻形势，统计表明平均每月至少有25起涉及无人机与飞机几乎发生碰撞的飞行事件。
+
+    为了尽快解决这一问题，而不是寻求一种“十全十美”的解决方案，德国AEVO股份有限公司已经开发了一种叫做AECAS的电子单元。该单元能够接收障碍物信息和无人机操控信息，并基于这些信息独立地生成一套修正命令，从而避免无人机与障碍物发生碰撞。在整个过程中，AECAS单元可以从系统中直接相连的传感器获取障碍物信息或接收指定标准格式的障碍物信息。在后一种模式下，无人机操作员无需选择适用的传感器、考虑其所处的方位及如何使用其获取的信息。
+
+    按照设计，AECAS单元与GPS定位系统完全独立。在不依靠GPS信息的情况下，ECAS团队开发了一种新的基于深度的SLAM技术来获取无人机的飞行速度，并利用障碍物的相对位置信息来确定避让策略。
+
+    基于AECAS单元，可以实现以下3种级别的防撞能力： EDC-紧急状态下的间距控制：保持无人机与障碍物之间的最小间距(可使用AECAS100和AECAS2000单元)；
+
+    ABS-自动减速监控：在无人机与障碍物靠近的过程中逐渐减速(可使用AECAS2000单元)；
+
+    AECAS100单元的成本为税前249欧元，可以在网上预订。改进型AECAS2000单元将于今年夏天开始接受预订。
+
+    news.infos: {'meta': {'description': '按照设计，AECAS单元与GPS定位系统完全独立。在不依靠GPS信息的情况下，ECAS团队开发了一种新的基于深度的SLAM技术来获取无人机的飞行速度，并利用障碍物的相对位置信息来确定避让策略。', 'lang': None, 'keywords': '无人机 防撞单元 多旋翼平台', 'favicon': '', 'canonical': 'http://military.cntv.cn/2015/05/28/ARTI1432794380285200.shtml', 'encoding': 'utf-8'}, 'image': None, 'domain': 'military.cntv.cn', 'title': '德公司推出无人机新型防撞单元 能配备多旋翼平台_军事_央视网(cctv.com)', 'cleaned_text': '中新网5月28日电 据中国国防科技信息网报道，针对无人机防撞问题，德国一家公司正在推出一种新的解决方案：无人机防撞单元。据悉，该单元在工作时使用多种不同的传感器，且无需GPS定位信息，能配备到大多数单旋翼或多旋翼平台上。\n\n无人机已经成为当今社会的一种重要工具，我们难以预估这一新兴产业对未来生活的深远影响。但可以明确的是，除了巨大的经济潜力，小型、灵活的无人机同时带来了一种实际的隐患：旋翼机在飞行过程中，若叶片碰触其他物体或正常运转受到阻碍，可能导致其坠落。举例说明这一问题的严峻形势，统计表明平均每月至少有25起涉及无人机与飞机几乎发生碰撞的飞行事件。\n\n为了尽快解决这一问题，而不是寻求一种“十全十美”的解决方案，德国AEVO股份有限公司已经开发了一种叫做AECAS的电子单元。该单元能够接收障碍物信息和无人机操控信息，并基于这些信息独立地生成一套修正命令，从而避免无人机与障碍物发生碰撞。在整个过程中，AECAS单元可以从系统中直接相连的传感器获取障碍物信息或接收指定标准格式的障碍物信息。在后一种模式下，无人机操作员无需选择适用的传感器、考虑其所处的方位及如何使用其获取的信息。\n\n按照设计，AECAS单元与GPS定位系统完全独立。在不依靠GPS信息的情况下，ECAS团队开发了一种新的基于深度的SLAM技术来获取无人机的飞行速度，并利用障碍物的相对位置信息来确定避让策略。\n\n基于AECAS单元，可以实现以下3种级别的防撞能力： EDC-紧急状态下的间距控制：保持无人机与障碍物之间的最小间距(可使用AECAS100和AECAS2000单元)；\n\nABS-自动减速监控：在无人机与障碍物靠近的过程中逐渐减速(可使用AECAS2000单元)；\n\nAECAS100单元的成本为税前249欧元，可以在网上预订。改进型AECAS2000单元将于今年夏天开始接受预订。', 'opengraph': {}, 'tags': [], 'tweets': [], 'movies': [], 'links': ['http://military.cntv.cn/list/world/', 'http://www.chinanews.com/mil/2015/05-28/7307057.shtml', '#pinglun', 'javascript:;', 'javascript:;', '#', '#', '#', '#', '#'], 'authors': '王腾', 'publish_date': '2015-05-28 00:00:00'}
+
+英文资讯
+~~~~~~~~
 
 .. code:: python
 
@@ -32,9 +85,7 @@ FatGoose3
     print(f'news.infos: %s\n' % news.infos)
     g.close()
 
-结果
-
-::
+.. code:: text
 
     news.title: Leading Chinese universities go all out for top students - Global Times
 
@@ -79,9 +130,7 @@ FatGoose3
     print(f'news.publish_date: %s\n' % news.publish_date)
     g.close()
 
-结果
-
-::
+.. code:: text
 
     news.author: Cui Fandi
 
