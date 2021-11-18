@@ -219,6 +219,8 @@ class Crawler(object):
         # let's process it
         if self.article._top_node is not None:
 
+            self.article._origin_top_node = deepcopy(self.article._top_node)
+
             # article links
             self.article._links = self.links_extractor.extract()
 

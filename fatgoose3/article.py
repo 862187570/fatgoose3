@@ -35,6 +35,7 @@ class Article(object):
         self._canonical_link = ""
         self._domain = ""
         self._top_node = None
+        self._origin_top_node = None
         self._top_image = None
         self._tags = []
         self._opengraph = {}
@@ -131,6 +132,14 @@ class Article(object):
             Note:
                 Read only '''
         return self._top_node
+
+    @property
+    def origin_top_node(self):
+        ''' etree: The origin top Element that is a candidate for the main body of the article
+
+            Note:
+                Read only '''
+        return self._origin_top_node
 
     @property
     def top_image(self):
